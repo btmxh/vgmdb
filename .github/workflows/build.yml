@@ -39,7 +39,9 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Get the version
-        run: echo REV=$(echo ${GITHUB_SHA:0:8}) >> $GITHUB_ENV
+        run: |
+          echo REV=$(echo ${GITHUB_SHA:0:8}) >> $GITHUB_ENV
+          echo REPO_LC=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
 
       - name: Prepare Qemu building
         uses: docker/setup-qemu-action@v2
@@ -48,7 +50,7 @@ jobs:
         run: |
           . docker/_inc.sh
           reqs_id=`get_reqs_id`-${{ matrix.platform }}
-          docker pull ghcr.io/${{ github.repository }}_reqs:$reqs_id && docker tag ghcr.io/${{ github.repository }}_reqs:$reqs_id vgmdb_reqs:$reqs_id || true
+          docker pull ghcr.io/$REPO_LC\_reqs:$reqs_id && docker tag ghcr.io/$REPO_LC\_reqs:$reqs_id vgmdb_reqs:$reqs_id || true
 
       - name: Build the combined image
         run: docker/docker-build.sh
@@ -67,24 +69,24 @@ jobs:
         id: check_reqs_image
         run: |
           reqs_id=`docker images | grep ^vgmdb_reqs | awk '{print $2}'`
-          echo "::set-output name=exists::"$(docker manifest inspect ghcr.io/${{ github.repository }}_reqs:$reqs_id > /dev/null && echo true || echo false)
+          echo "::set-output name=exists::"$(docker manifest inspect ghcr.io/$REPO_LC\_reqs:$reqs_id > /dev/null && echo true || echo false)
 
       - name: Push the reqs image
         if: steps.check_reqs_image.outputs.exists == 'false'
         run: |
           reqs_id=`docker images | grep ^vgmdb_reqs | awk '{print $2}'`
-          docker tag vgmdb_reqs:$reqs_id ghcr.io/${{ github.repository }}_reqs:$reqs_id
-          docker push ghcr.io/${{ github.repository }}_reqs:$reqs_id
+          docker tag vgmdb_reqs:$reqs_id ghcr.io/$REPO_LC\_reqs:$reqs_id
+          docker push ghcr.io/$REPO_LC\_reqs:$reqs_id
 
       - name: Tag and push the images
         run: |
           PLATFORM=${{ matrix.platform }}
-          docker tag vgmdb:$REV-$PLATFORM ghcr.io/${{ github.repository }}:$REV-$PLATFORM
-          docker push ghcr.io/${{ github.repository }}:$REV-$PLATFORM
-          docker tag vgmdb_celery:$REV-$PLATFORM ghcr.io/${{ github.repository }}_celery:$REV-$PLATFORM
-          docker push ghcr.io/${{ github.repository }}_celery:$REV-$PLATFORM
-          docker tag vgmdb_web:$REV-$PLATFORM ghcr.io/${{ github.repository }}_web:$REV-$PLATFORM
-          docker push ghcr.io/${{ github.repository }}_web:$REV-$PLATFORM
+          docker tag vgmdb:$REV-$PLATFORM ghcr.io/$REPO_LC:$REV-$PLATFORM
+          docker push ghcr.io/$REPO_LC:$REV-$PLATFORM
+          docker tag vgmdb_celery:$REV-$PLATFORM ghcr.io/$REPO_LC\_celery:$REV-$PLATFORM
+          docker push ghcr.io/$REPO_LC\_celery:$REV-$PLATFORM
+          docker tag vgmdb_web:$REV-$PLATFORM ghcr.io/$REPO_LC\_web:$REV-$PLATFORM
+          docker push ghcr.io/$REPO_LC\_web:$REV-$PLATFORM
 
   dockerfinalize:
     needs: dockerize
@@ -94,23 +96,25 @@ jobs:
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Get the version
-        run: echo REV=$(echo ${GITHUB_SHA:0:8}) >> $GITHUB_ENV
+        run: |
+          echo REV=$(echo ${GITHUB_SHA:0:8}) >> $GITHUB_ENV
+          echo REPO_LC=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
       - name: Combine multiplatform images
         run: |
-          docker manifest create ghcr.io/${{ github.repository }}:$REV $(docker manifest inspect ghcr.io/${{ github.repository }}:$REV-amd64 >/dev/null && echo ghcr.io/${{ github.repository }}:$REV-amd64) $(docker manifest inspect ghcr.io/${{ github.repository }}:$REV-arm64 >/dev/null && echo ghcr.io/${{ github.repository }}:$REV-arm64)
-          docker manifest push ghcr.io/${{ github.repository }}:$REV
-          docker manifest create ghcr.io/${{ github.repository }}_celery:$REV $(docker manifest inspect ghcr.io/${{ github.repository }}_celery:$REV-amd64 >/dev/null && echo ghcr.io/${{ github.repository }}_celery:$REV-amd64) $(docker manifest inspect ghcr.io/${{ github.repository }}_celery:$REV-arm64 >/dev/null && echo ghcr.io/${{ github.repository }}_celery:$REV-arm64)
-          docker manifest push ghcr.io/${{ github.repository }}_celery:$REV
-          docker manifest create ghcr.io/${{ github.repository }}_web:$REV $(docker manifest inspect ghcr.io/${{ github.repository }}_web:$REV-amd64 >/dev/null && echo ghcr.io/${{ github.repository }}_web:$REV-amd64) $(docker manifest inspect ghcr.io/${{ github.repository }}_web:$REV-arm64 >/dev/null && echo ghcr.io/${{ github.repository }}_web:$REV-arm64)
-          docker manifest push ghcr.io/${{ github.repository }}_web:$REV
+          docker manifest create ghcr.io/$REPO_LC:$REV $(docker manifest inspect ghcr.io/$REPO_LC:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC:$REV-arm64)
+          docker manifest push ghcr.io/$REPO_LC:$REV
+          docker manifest create ghcr.io/$REPO_LC\_celery:$REV $(docker manifest inspect ghcr.io/$REPO_LC\_celery:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC\_celery:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC\_celery:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC\_celery:$REV-arm64)
+          docker manifest push ghcr.io/$REPO_LC\_celery:$REV
+          docker manifest create ghcr.io/$REPO_LC\_web:$REV $(docker manifest inspect ghcr.io/$REPO_LC\_web:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC\_web:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC\_web:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC\_web:$REV-arm64)
+          docker manifest push ghcr.io/$REPO_LC\_web:$REV
 
       - name: Tag and push the latest images
         if: github.event.ref == 'refs/heads/lemmmy'
         run: |
-          docker manifest create ghcr.io/${{ github.repository }}:latest $(docker manifest inspect ghcr.io/${{ github.repository }}:$REV-amd64 >/dev/null && echo ghcr.io/${{ github.repository }}:$REV-amd64) $(docker manifest inspect ghcr.io/${{ github.repository }}:$REV-arm64 >/dev/null && echo ghcr.io/${{ github.repository }}:$REV-arm64)
-          docker manifest push ghcr.io/${{ github.repository }}:latest
-          docker manifest create ghcr.io/${{ github.repository }}_celery:latest $(docker manifest inspect ghcr.io/${{ github.repository }}_celery:$REV-amd64 >/dev/null && echo ghcr.io/${{ github.repository }}_celery:$REV-amd64) $(docker manifest inspect ghcr.io/${{ github.repository }}_celery:$REV-arm64 >/dev/null && echo ghcr.io/${{ github.repository }}_celery:$REV-arm64)
-          docker manifest push ghcr.io/${{ github.repository }}_celery:latest
-          docker manifest create ghcr.io/${{ github.repository }}_web:latest $(docker manifest inspect ghcr.io/${{ github.repository }}_web:$REV-amd64 >/dev/null && echo ghcr.io/${{ github.repository }}_web:$REV-amd64) $(docker manifest inspect ghcr.io/${{ github.repository }}_web:$REV-arm64 >/dev/null && echo ghcr.io/${{ github.repository }}_web:$REV-arm64)
-          docker manifest push ghcr.io/${{ github.repository }}_web:latest
+          docker manifest create ghcr.io/$REPO_LC:latest $(docker manifest inspect ghcr.io/$REPO_LC:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC:$REV-arm64)
+          docker manifest push ghcr.io/$REPO_LC:latest
+          docker manifest create ghcr.io/$REPO_LC\_celery:latest $(docker manifest inspect ghcr.io/$REPO_LC\_celery:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC\_celery:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC\_celery:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC\_celery:$REV-arm64)
+          docker manifest push ghcr.io/$REPO_LC\_celery:latest
+          docker manifest create ghcr.io/$REPO_LC\_web:latest $(docker manifest inspect ghcr.io/$REPO_LC\_web:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC\_web:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC\_web:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC\_web:$REV-arm64)
+          docker manifest push ghcr.io/$REPO_LC\_web:latest
 
