@@ -12,7 +12,7 @@ class outputter(object):
     content_type = "text/html; charset=utf-8"
 
     def __init__(self, config):
-        import jinja
+        import jinja2
 
         self._config = config
         self._templates = jinja2.Environment(
@@ -37,8 +37,8 @@ class outputter(object):
         self._templates.filters["or_unavailable"] = self.or_unavailable
         self._templates.tests["empty"] = lambda x: len(x) == 0
         self._templates.tests["linktype"] = self.linktype
-        self._Markup = jinja2.Markup
-        self._escape = jinja2.escape
+        self._Markup = jinja2.utils.markupsafe.Markup
+        self._escape = jinja2.utils.markupsafe.escape
 
     def __call__(self, type, data, filterkey=None):
         data["type"] = type
