@@ -12,7 +12,7 @@ class TestAlbumList(unittest.TestCase):
         pass
 
     def test_list(self):
-        list_code = file(os.path.join(base, "albumlist.html"), "r").read()
+        list_code = open(os.path.join(base, "albumlist.html"), "r").read()
         list = albumlist.parse_page(list_code)
 
         self.assertEqual("album/12991", list["albums"][0]["link"])

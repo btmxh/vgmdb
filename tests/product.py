@@ -12,7 +12,7 @@ class TestProducts(unittest.TestCase):
         pass
 
     def test_skyrim(self):
-        skyrim_code = file(os.path.join(base, "product_skyrim.html"), "r").read()
+        skyrim_code = open(os.path.join(base, "product_skyrim.html"), "r").read()
         skyrim = product.parse_page(skyrim_code)
         self.assertEqual("2011-11-11", skyrim["release_date"])
         self.assertEqual(
@@ -34,7 +34,7 @@ class TestProducts(unittest.TestCase):
         )
 
     def test_witcher(self):
-        witcher_code = file(os.path.join(base, "product_witcher.html"), "r").read()
+        witcher_code = open(os.path.join(base, "product_witcher.html"), "r").read()
         witcher = product.parse_page(witcher_code)
         self.assertEqual("2011-05-17", witcher["release_date"])
         self.assertEqual("The Witcher", witcher["franchises"][0]["names"]["en"])
@@ -46,7 +46,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(0, len(witcher["organizations"]))
 
     def test_at(self):
-        at_code = file(os.path.join(base, "product_at.html"), "r").read()
+        at_code = open(os.path.join(base, "product_at.html"), "r").read()
         at = product.parse_page(at_code)
         self.assertEqual("Franchise", at["type"])
         self.assertEqual("Ar tonelico", at["name"])
@@ -65,7 +65,7 @@ class TestProducts(unittest.TestCase):
                 self.assertEqual(True, thing["reprint"])
 
     def test_empty(self):
-        im_code = file(os.path.join(base, "product_empty.html"), "r").read()
+        im_code = open(os.path.join(base, "product_empty.html"), "r").read()
         im = product.parse_page(im_code)
         self.assertEqual("PROJECT IM@S", im["name"])
         self.assertEqual("プロジェクト・アイマス", im["name_real"])
@@ -73,7 +73,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual(0, len(im["albums"]))
 
     def test_ataraxia(self):
-        at_code = file(os.path.join(base, "product_hollowataraxia.html"), "r").read()
+        at_code = open(os.path.join(base, "product_hollowataraxia.html"), "r").read()
         at = product.parse_page(at_code)
         self.assertEqual("Fate/hollow ataraxia", at["name"])
         self.assertEqual(27, len(at["albums"]))
@@ -84,7 +84,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual("release/2652", at["releases"][0]["link"])
 
     def test_clannad(self):
-        cl_code = file(os.path.join(base, "product_clannad.html")).read()
+        cl_code = open(os.path.join(base, "product_clannad.html")).read()
         cl = product.parse_page(cl_code)
         self.assertEqual("CLANNAD", cl["name"])
         self.assertTrue("websites" in cl)
@@ -98,7 +98,7 @@ class TestProducts(unittest.TestCase):
         )
 
     def test_hack(self):
-        hack_code = file(os.path.join(base, "product_hack.html")).read()
+        hack_code = open(os.path.join(base, "product_hack.html")).read()
         hack = product.parse_page(hack_code)
         self.assertEqual(".hack//", hack["name"])
         self.assertEqual("Franchise", hack["type"])
@@ -113,7 +113,7 @@ class TestProducts(unittest.TestCase):
         self.assertEqual("Test description", hack["description"])
 
     def test_madhouse(self):
-        madhouse_code = file(os.path.join(base, "product_madhouse.html")).read()
+        madhouse_code = open(os.path.join(base, "product_madhouse.html")).read()
         madhouse = product.parse_page(madhouse_code)
         self.assertEqual("MADHOUSE", madhouse["name"])
         self.assertEqual("Meta-franchise", madhouse["type"])
@@ -135,7 +135,7 @@ class TestProducts(unittest.TestCase):
 
     def test_bandai(self):
         # empty subproducts
-        bandai_code = file(os.path.join(base, "product_bandai.html")).read()
+        bandai_code = open(os.path.join(base, "product_bandai.html")).read()
         bandai = product.parse_page(bandai_code)
         self.assertEqual("BANDAI NAMCO Games", bandai["name"])
         self.assertEqual("Meta-franchise", bandai["type"])
@@ -143,7 +143,7 @@ class TestProducts(unittest.TestCase):
 
     def test_ecco(self):
         # empty title dates
-        ecco_code = file(os.path.join(base, "product_ecco.html")).read()
+        ecco_code = open(os.path.join(base, "product_ecco.html")).read()
         ecco = product.parse_page(ecco_code)
         self.assertEqual("Ecco", ecco["name"])
         self.assertEqual("Franchise", ecco["type"])
@@ -151,7 +151,7 @@ class TestProducts(unittest.TestCase):
 
     def test_attack(self):
         # "other" product type
-        attack_code = file(os.path.join(base, "product_attack.html")).read()
+        attack_code = open(os.path.join(base, "product_attack.html")).read()
         attack = product.parse_page(attack_code)
         self.assertEqual("Attack on Titan", attack["name"])
         self.assertEqual("Franchise", attack["type"])

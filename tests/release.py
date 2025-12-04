@@ -12,7 +12,7 @@ class TestReleases(unittest.TestCase):
         pass
 
     def test_ataraxiavita(self):
-        at_code = file(
+        at_code = open(
             os.path.join(base, "release_hollowataraxiavita.html"), "r"
         ).read()
         at = release.parse_page(at_code)
@@ -50,7 +50,7 @@ class TestReleases(unittest.TestCase):
         self.assertEqual(112, at["meta"]["visitors"])
 
     def test_ataraxiapc(self):
-        at_code = file(os.path.join(base, "release_hollowataraxiapc.html"), "r").read()
+        at_code = open(os.path.join(base, "release_hollowataraxiapc.html"), "r").read()
         at = release.parse_page(at_code)
         self.assertEqual(
             0, len(at["release_albums"])

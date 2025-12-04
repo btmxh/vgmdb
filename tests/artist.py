@@ -12,7 +12,7 @@ class TestArtists(unittest.TestCase):
         pass
 
     def test_nobuo(self):
-        nobuo_code = file(os.path.join(base, "artist_nobuo.html"), "r").read()
+        nobuo_code = open(os.path.join(base, "artist_nobuo.html"), "r").read()
         nobuo = artist.parse_page(nobuo_code)
         self.assertEqual("Nobuo Uematsu", nobuo["name"])
         self.assertEqual("male", nobuo["sex"])
@@ -75,7 +75,7 @@ class TestArtists(unittest.TestCase):
         self.assertEqual(0, len(list(name_info.keys())))
 
     def test_ss(self):
-        ss_code = file(os.path.join(base, "artist_ss.html"), "r").read()
+        ss_code = open(os.path.join(base, "artist_ss.html"), "r").read()
         ss = artist.parse_page(ss_code)
         self.assertEqual(
             "Composer (as HAPPY-SYNTHESIZER)", ss["discography"][13]["roles"][0]
@@ -89,13 +89,13 @@ class TestArtists(unittest.TestCase):
 
     def test_s_s(self):
         # sexy synthesizer alias
-        ss_code = file(os.path.join(base, "artist_s_s.html"), "r").read()
+        ss_code = open(os.path.join(base, "artist_s_s.html"), "r").read()
         ss = artist.parse_page(ss_code)
         self.assertEqual("(S_S)", ss["name"])
         self.assertEqual("Alias", ss["type"])
 
     def test_offenbach(self):
-        offenbach_code = file(os.path.join(base, "artist_offenbach.html"), "r").read()
+        offenbach_code = open(os.path.join(base, "artist_offenbach.html"), "r").read()
         offenbach = artist.parse_page(offenbach_code)
         self.assertEqual("Jacques Offenbach", offenbach["name"])
         self.assertEqual("male", offenbach["sex"])
@@ -104,7 +104,7 @@ class TestArtists(unittest.TestCase):
         self.assertEqual("1880-10-05", offenbach["deathdate"])
 
     def test_key(self):
-        key_code = file(os.path.join(base, "artist_key.html"), "r").read()
+        key_code = open(os.path.join(base, "artist_key.html"), "r").read()
         key = artist.parse_page(key_code)
         self.assertEqual("Jun Maeda", key["name"])
         self.assertEqual("Individual", key["type"])
@@ -113,7 +113,7 @@ class TestArtists(unittest.TestCase):
         self.assertEqual("KEY", key["aliases"][0]["names"]["en"])
 
     def test_rookies(self):
-        rookies_code = file(os.path.join(base, "artist_rookies.html"), "r").read()
+        rookies_code = open(os.path.join(base, "artist_rookies.html"), "r").read()
         rookies = artist.parse_page(rookies_code)
         self.assertEqual("ROOKiEZ is PUNK'D", rookies["name"])
         self.assertEqual(3, len(rookies["info"]["Members"]))
@@ -126,7 +126,7 @@ class TestArtists(unittest.TestCase):
         self.assertEqual("2RASH", rookies["info"]["Former Members"][0]["names"]["en"])
 
     def test_horie(self):
-        horie_code = file(os.path.join(base, "artist_horie.html"), "r").read()
+        horie_code = open(os.path.join(base, "artist_horie.html"), "r").read()
         horie = artist.parse_page(horie_code)
         self.assertEqual("B", horie["info"]["Bloodtype"])
 

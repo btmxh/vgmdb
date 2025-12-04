@@ -12,7 +12,7 @@ class TestEvents(unittest.TestCase):
         pass
 
     def test_m3(self):
-        m3_code = file(os.path.join(base, "event_m3.html"), "r").read()
+        m3_code = open(os.path.join(base, "event_m3.html"), "r").read()
         m3 = event.parse_page(m3_code)
         self.assertEqual("M3-2012 Fall", m3["name"])
         self.assertEqual("2012-10-28", m3["startdate"])
@@ -30,7 +30,7 @@ class TestEvents(unittest.TestCase):
         self.assertEqual(30, len(m3["releases"]))
 
     def test_cm54(self):
-        cm54_code = file(os.path.join(base, "event_cm54.html"), "r").read()
+        cm54_code = open(os.path.join(base, "event_cm54.html"), "r").read()
         cm54 = event.parse_page(cm54_code)
         self.assertEqual("Comic Market 54", cm54["name"])
         self.assertEqual("1998-08-14", cm54["startdate"])

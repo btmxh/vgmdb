@@ -12,7 +12,7 @@ class TestArtistList(unittest.TestCase):
         pass
 
     def test_list(self):
-        list_code = file(os.path.join(base, "artistlist.html"), "r").read()
+        list_code = open(os.path.join(base, "artistlist.html"), "r").read()
         list = artistlist.parse_page(list_code)
 
         self.assertEqual(99, len(list["artists"]))

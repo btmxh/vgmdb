@@ -39,19 +39,19 @@ class TestRDF(unittest.TestCase):
     def load_data(
         self, filename, output_format, parse_format, filterkey=None, **parse_kwargs
     ):
-        code = file(os.path.join(base, filename), "r").read()
+        code = open(os.path.join(base, filename), "r").read()
         data = self.data_parser(code)
         outputter = output.get_outputter(config, output_format, None)
         output_data = outputter(self.outputter_type, data, filterkey=filterkey)
         debugoutput = output_data
         if isinstance(debugoutput, str):
             debugoutput = output_data.encode("utf-8")
-        file("/tmp/rdftest.%s.%s" % (self.outputter_type, output_format), "w").write(
+        open("/tmp/rdftest.%s.%s" % (self.outputter_type, output_format), "w").write(
             debugoutput
         )
         graph = Graph()
         graph.parse(data=output_data, format=parse_format, **parse_kwargs)
-        file(
+        open(
             "/tmp/rdftest.parsed.%s.%s" % (self.outputter_type, output_format), "w"
         ).write(graph.serialize(format="turtle"))
         return graph

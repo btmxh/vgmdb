@@ -12,7 +12,7 @@ class TestSearchList(unittest.TestCase):
         pass
 
     def test_search(self):
-        search_code = file(os.path.join(base, "search.html"), "r").read()
+        search_code = open(os.path.join(base, "search.html"), "r").read()
         search = vgmdb.parsers.search.parse_page(search_code)
 
         self.assertEqual(8, len(search["results"]["albums"]))
@@ -43,7 +43,7 @@ class TestSearchList(unittest.TestCase):
         self.assertEqual("Game", search["results"]["products"][0]["type"])
 
     def test_search_quotes(self):
-        search_code = file(os.path.join(base, "search_quotes.html"), "r").read()
+        search_code = open(os.path.join(base, "search_quotes.html"), "r").read()
         search = vgmdb.parsers.search.parse_page(search_code)
 
         self.assertEqual(

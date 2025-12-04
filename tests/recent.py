@@ -12,7 +12,7 @@ class TestRecent(unittest.TestCase):
         pass
 
     def test_albums(self):
-        html = file(os.path.join(base, "recent_albums.html"), "r").read()
+        html = open(os.path.join(base, "recent_albums.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -42,7 +42,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("2013-10-20T15:40", up[0]["date"])
 
     def test_media(self):
-        html = file(os.path.join(base, "recent_media.html"), "r").read()
+        html = open(os.path.join(base, "recent_media.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -67,7 +67,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("2013-10-20T15:11", up[0]["date"])
 
     def test_tracklists(self):
-        html = file(os.path.join(base, "recent_tracklists.html"), "r").read()
+        html = open(os.path.join(base, "recent_tracklists.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -93,7 +93,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("2013-10-20T15:17", up[0]["date"])
 
     def test_scans(self):
-        html = file(os.path.join(base, "recent_scans.html"), "r").read()
+        html = open(os.path.join(base, "recent_scans.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -121,7 +121,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("2013-10-20T07:56", up[-1]["date"])
 
     def test_artists(self):
-        html = file(os.path.join(base, "recent_artists.html"), "r").read()
+        html = open(os.path.join(base, "recent_artists.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -144,7 +144,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("2013-10-20T11:28", up[-1]["date"])
 
     def test_products(self):
-        html = file(os.path.join(base, "recent_products.html"), "r").read()
+        html = open(os.path.join(base, "recent_products.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -166,7 +166,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("2013-10-19T06:50", up[0]["date"])
 
     def test_labels(self):
-        html = file(os.path.join(base, "recent_labels.html"), "r").read()
+        html = open(os.path.join(base, "recent_labels.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -201,7 +201,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("Martin", up[-4]["linked"]["names"]["en"])
 
     def test_links(self):
-        html = file(os.path.join(base, "recent_links.html"), "r").read()
+        html = open(os.path.join(base, "recent_links.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 
@@ -241,7 +241,7 @@ class TestRecent(unittest.TestCase):
         self.assertEqual("Assassination Classroom", up[-1]["names"]["en"])
 
     def test_ratings(self):
-        html = file(os.path.join(base, "recent_ratings.html"), "r").read()
+        html = open(os.path.join(base, "recent_ratings.html"), "r").read()
         data = recent.parse_page(html)
         up = data["updates"]
 

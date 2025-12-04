@@ -12,7 +12,7 @@ class TestOrgList(unittest.TestCase):
         pass
 
     def test_list(self):
-        list_code = file(os.path.join(base, "orglist.html"), "r").read()
+        list_code = open(os.path.join(base, "orglist.html"), "r").read()
         list = orglist.parse_page(list_code)
 
         self.assertEqual(27, len(list(list["orgs"].keys())))

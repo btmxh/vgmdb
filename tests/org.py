@@ -12,7 +12,7 @@ class TestOrgs(unittest.TestCase):
         pass
 
     def test_dogear(self):
-        dogear_code = file(os.path.join(base, "org_dogear.html"), "r").read()
+        dogear_code = open(os.path.join(base, "org_dogear.html"), "r").read()
         dogear = org.parse_page(dogear_code)
         self.assertEqual("Dog Ear Records Co., Ltd.", dogear["name"])
         self.assertEqual("Label / Imprint", dogear["type"])
@@ -39,7 +39,7 @@ class TestOrgs(unittest.TestCase):
         )
 
     def test_vagrancy(self):
-        vagrancy_code = file(os.path.join(base, "org_vagrancy.html"), "r").read()
+        vagrancy_code = open(os.path.join(base, "org_vagrancy.html"), "r").read()
         vagrancy = org.parse_page(vagrancy_code)
         self.assertEqual("VAGRANCY", vagrancy["name"])
         self.assertEqual("Akiko Shikata", vagrancy["staff"][0]["names"]["en"])
