@@ -24,7 +24,7 @@ There are also links to validation services, to verify that the page's data is i
 # Development and Installation
 Unit tests are employed, both in the parsing and in the output stages, to validate that the information is being correctly parsed and encoded. Run the tests.sh script to run the tests.
 
-Most of any runtime requirements should be documented in requirements.txt. Use pip install -r requirements.txt to install them.
+Most of any runtime requirements should be documented in requirements.txt. Use pip install -r requirements.txt to install them. **NOTE: for this fork, dependencies are declared in `pyproject.toml` instead.**
 
 The run.py example script will start up an HTTP server process for the site. An example Apache2 configuration, using mod\_wsgi, is also provided. It should work just as well under any other WSGI server.
 
