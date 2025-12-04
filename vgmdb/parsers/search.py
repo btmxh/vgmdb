@@ -93,14 +93,14 @@ def fetch_page(query, retries=2):
     if SEARCH_INDEX:
         return search_locally(query)
 
+    url = fetch_url(query)
     try:
-        url = fetch_url(query)
         page = urllib.request.urlopen(url)
-    except urllib3.HTTPError as error:
+    except urllib.error.HTTPError as error:
         print("HTTPError %s while fetching %s" % (error.code, url), file=sys.stderr)
         if error.code == 503 and retries:
             time.sleep(random.randint(500, 3000) / 1000.0)
-            return fetch_page(url, retries - 1)
+            return fetch_page(query, retries - 1)
         print(error.read(), file=sys.stderr)
         raise
 

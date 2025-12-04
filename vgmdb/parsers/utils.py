@@ -13,19 +13,21 @@ db_parser = re.compile(r"db/([a-z]+)\.php")
 
 
 def fetch_page(url, retries=2):
-    try:
-        request = urllib3.Request(url)
-        request.add_header("User-Agent", "VGMdb/1.0 vgmdb.info")
-        data = urllib3.urlopen(request, None, 30).read()
-        data = data.decode("utf-8", "ignore")
-        return data
-    except urllib3.HTTPError as error:
-        print("HTTPError %s while fetching %s" % (error.code, url), file=sys.stderr)
-        if error.code == 503 and retries:
+    response = urllib3.request(
+        "GET", url, headers={"User-Agent": "VGMdb/1.0 vgmdb.info"}
+    )
+    if response.status != 200:
+        print(
+            "HTTPError %s while fetching %s" % (response.status, url), file=sys.stderr
+        )
+        if response.status == 503 and retries:
             time.sleep(random.randint(500, 3000) / 1000.0)
             return fetch_page(url, retries - 1)
-        print(error.read(), file=sys.stderr)
-        raise
+        print(response.data, file=sys.stderr)
+
+        raise urllib3.exceptions.HTTPError("HTTP status %s" % response.status)
+    data = response.data.decode("utf-8", "ignore")
+    return data
 
 
 def url_info_page(type, id):
