@@ -3,6 +3,7 @@ Will load from cache, or from synchronous request module, or async celery
 """
 
 import urllib as _urllib
+import urllib.parse as _urlparse
 import base64 as _base64
 import datetime as _datetime
 import logging as _logging
@@ -114,7 +115,7 @@ def info(page_type, id, use_cache=True):
     @param id is which specific item to load
     @param use_cache can be set to False to ignore any cached data
     """
-    cache_key = "vgmdb/%s/%s" % (page_type, _urllib.quote(str(id)))
+    cache_key = "vgmdb/%s/%s" % (page_type, _urlparse.quote(str(id)))
     link = "%s/%s" % (page_type, id)
     return _fetch_page(cache_key, page_type, id, link, use_cache)
 
@@ -142,8 +143,8 @@ def list(page_type, id="A1", use_cache=True, use_celery=True):
     """
     if id:
         if len(id) == 1:
-            id = id + "1"  # add a page number
-        link = "%s/%s" % (page_type, _urllib.quote(str(id)))
+            id = id + "1"  # add a pa_urlparse.quote
+        link = "%s/%s" % (page_type, _urlparse.quote(str(id)))
     else:
         link = "%s" % (page_type,)
     cache_key = "vgmdb/%s/%s" % (page_type, id)
@@ -173,10 +174,10 @@ def search(page_type, query, use_cache=True):
     @param use_cache can be set to False to ignore any cached data
     """
     cache_key = "vgmdb/search/%s" % (_base64.b64encode(query),)
-    link = "search/%s" % (_urllib.quote(query),)
+    link = "search/%s" % (_urlparse.quote(query),)
     data = _fetch_page(cache_key, "search", query, link, use_cache)
     if page_type:
-        data["link"] = "search/%s/%s" % (page_type, _urllib.quote(query))
+        data["link"] = "search/%s/%s" % (page_type, _urlparse.quote(query))
     return data
 
 
@@ -196,7 +197,7 @@ def recent(page_type, use_cache=True):
     @param page_type says which specific type of page
     """
     cache_key = "vgmdb/recent/%s" % (page_type,)
-    link = "recent/%s" % (_urllib.quote(page_type),)
+    link = "recent/%s" % (_urlparse.quote(page_type),)
     info = _fetch_page(cache_key, "recent", page_type, link, use_cache)
     _clear_recent_cache(info)
     return info

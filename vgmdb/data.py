@@ -2,6 +2,7 @@
 
 import re as _re
 import urllib as _urllib
+import urllib.parse as _urlparse
 import base64 as _base64
 
 from datetime import datetime as _datetime
@@ -110,7 +111,7 @@ def info(page_type, id):
             artist album product event org
     @param id is which specific item to load
     """
-    cache_key = "vgmdb/%s/%s" % (page_type, _urllib.quote(str(id)))
+    cache_key = "vgmdb/%s/%s" % (page_type, _urlparse.quote(str(id)))
     link = "%s/%s" % (page_type, id)
     return request_page(cache_key, page_type, id, link)
 
@@ -137,7 +138,7 @@ def list(page_type, id="A"):
     if page_type in ["orglist", "eventlist"]:  # complete pages
         cache_key = "vgmdb/%s" % (page_type,)
     if id:
-        link = "%s/%s" % (page_type, _urllib.quote(str(id)))
+        link = "%s/%s" % (page_type, _urlparse.quote(str(id)))
     else:
         link = "%s" % (page_type,)
     return request_page(cache_key, page_type, id, link)
@@ -162,10 +163,10 @@ def search(page_type, query):
     @param query is what to search for
     """
     cache_key = "vgmdb/search/%s" % (_base64.b64encode(query),)
-    link = "search/%s" % (_urllib.quote(query),)
+    link = "search/%s" % (_urlparse.quote(query),)
     data = request_page(cache_key, "search", query, link)
     if page_type:
-        data["link"] = "search/%s/%s" % (page_type, _urllib.quote(query))
+        data["link"] = "search/%s/%s" % (page_type, _urlparse.quote(query))
     return data
 
 
@@ -184,7 +185,7 @@ def recent(page_type):
     @param page_type says which specific type of page
     """
     cache_key = "vgmdb/recent/%s" % (page_type,)
-    link = "recent/%s" % (_urllib.quote(page_type),)
+    link = "recent/%s" % (_urlparse.quote(page_type),)
     info = request_page(cache_key, "recent", page_type, link)
     _clear_recent_cache(info)
     return info
