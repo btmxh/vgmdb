@@ -29,7 +29,7 @@ except:
 
 import pickle
 try:
-	import cPickle as pickle
+	import pickle as pickle
 except:
 	pass
 
@@ -63,7 +63,7 @@ class MemcacheCache(object):
 			stats = self._memcache.get_stats()
 		elif hasattr(self._memcache, 'stats'):
 			stats = self._memcache.stats()
-		if stats is not None and all((len(s)==0 for s in stats.values())):
+		if stats is not None and all((len(s)==0 for s in list(stats.values()))):
 			raise IOError("Could not connect to memcache")
 	def __getitem__(self, key):
 		# returns the value or None

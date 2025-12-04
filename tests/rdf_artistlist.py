@@ -6,7 +6,7 @@ import unittest
 from ._rdf import TestRDF
 from vgmdb.parsers import artistlist
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestArtistlistRDF(TestRDF):
 	data_parser = lambda self,x: artistlist.parse_page(x)
@@ -19,7 +19,7 @@ class TestArtistlistRDF(TestRDF):
 			"select ?artist where { ?artist rdf:type schema:MusicGroup . }" : 99
 		}
 		test_first_result = {
-			"select ?name where { <@baseartist/6616#subject> foaf:name ?name . }" : u"Aaron Harmon"
+			"select ?name where { <@baseartist/6616#subject> foaf:name ?name . }" : "Aaron Harmon"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def test_list_rdfa(self):

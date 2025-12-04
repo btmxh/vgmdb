@@ -7,7 +7,7 @@ import decimal
 from ._rdf import TestRDF
 from vgmdb.parsers import album
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestAlbumsRDF(TestRDF):
 	data_parser = lambda self,x: album.parse_page(x)
@@ -48,12 +48,12 @@ class TestAlbumsRDF(TestRDF):
 			"select ?work where { <@base#composition> mo:produced_work ?work . }" : "<@base#musicalwork>",
 			"select ?lyrics where { <@base#musicalwork> mo:lyrics ?lyrics . }" : "<@base#lyrics>",
 			"select ?about where { <@base#subject> schema:about ?about . } " : "<@baseproduct/189#subject>",
-			"select ?name where { <@base#subject> schema:about ?about . ?about schema:name ?name . filter(lang(?name)='en')} " : u'Final Fantasy VIII',
-			"select ?name where { <@base#subject> schema:about ?about . ?about schema:name ?name . filter(lang(?name)='ja')} " : u'ファイナルファンタジーVIII',
-			"select ?name where { ?album rdf:type mo:Release . ?album dcterms:title ?name . }" : u'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
-			"select ?name where { ?album rdf:type mo:Release . ?album schema:name ?name . }" : u'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
-			"select ?name where { ?album rdf:type mo:Performance . ?album schema:name ?name . }" : u'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
-			"select ?name where { ?album rdf:type mo:Composition . ?album schema:name ?name . }" : u'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
+			"select ?name where { <@base#subject> schema:about ?about . ?about schema:name ?name . filter(lang(?name)='en')} " : 'Final Fantasy VIII',
+			"select ?name where { <@base#subject> schema:about ?about . ?about schema:name ?name . filter(lang(?name)='ja')} " : 'ファイナルファンタジーVIII',
+			"select ?name where { ?album rdf:type mo:Release . ?album dcterms:title ?name . }" : 'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
+			"select ?name where { ?album rdf:type mo:Release . ?album schema:name ?name . }" : 'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
+			"select ?name where { ?album rdf:type mo:Performance . ?album schema:name ?name . }" : 'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
+			"select ?name where { ?album rdf:type mo:Composition . ?album schema:name ?name . }" : 'FITHOS LUSEC WECOS VINOSEC: FINAL FANTASY VIII [Limited Edition]',
 			"select ?catalog where { <@base#subject> mo:catalogue_number ?catalog . }" : "SSCX-10037",
 			"select ?catalog where { <@base#subject> mo:other_release_of ?release . ?release mo:catalogue_number ?catalog . } order by desc(?catalog)" : "SQEX-10025",
 			"select ?date where { ?album rdf:type schema:MusicAlbum . ?album dcterms:created ?date . }" : datetime.date(1999,11,20),

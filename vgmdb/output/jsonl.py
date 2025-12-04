@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 
 mimetypes = ['application/json+singleline']
 name = 'jsonl'

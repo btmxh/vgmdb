@@ -1,4 +1,5 @@
 import sys
+import importlib
 
 mimetypes = ['application/x-turtle', 'text/turtle']
 name = 'turtle'
@@ -9,9 +10,9 @@ class outputter(object):
 	def __init__(self, config):
 		self._config = config
 		if self._config.AUTO_RELOAD and \
-                   'vgmdb.output.rdf' in sys.modules.keys():
-			reload(sys.modules['vgmdb.output.rdf'])
-		import rdf
+                   'vgmdb.output.rdf' in list(sys.modules.keys()):
+			importlib.reload(sys.modules['vgmdb.output.rdf'])
+		from . import rdf
 		self._rdf = rdf
 
 	def __call__(self, type, data, filterkey=None):

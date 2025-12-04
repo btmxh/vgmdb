@@ -24,14 +24,14 @@ def parse_page(html_source):
 	for soup_cell in soup_table.find_all('td'):
 		for soup_letter in soup_cell.find_all('h3'):
 			heading = soup_letter.string   # might be None
-			letter = unicode(heading)   # might be u'None'
+			letter = str(heading)   # might be u'None'
 			if not heading or \
 			   not letter or \
 			   not islettermatcher.match(letter):
 				letter = '#'
 			if letter not in orglist_info['letters']:
 				orglist_info['letters'].append(letter)
-			if not orglist_info['orgs'].has_key(letter):
+			if letter not in orglist_info['orgs']:
 				orglist_info['orgs'][letter] = []
 			letter_orglist = _parse_orglist(soup_letter.find_next('ul'))
 			orglist_info['orgs'][letter].extend(letter_orglist)
@@ -64,6 +64,6 @@ def _parse_org(soup_org):
 def _parse_orglink(soup_link):
 	org_link = soup_link['href']
 	org_link = utils.trim_absolute(org_link)
-	org_name = unicode(soup_link.string)
+	org_name = str(soup_link.string)
 	return {'link': org_link,
 	        'names': {'en':org_name}}

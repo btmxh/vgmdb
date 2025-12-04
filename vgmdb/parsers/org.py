@@ -55,7 +55,7 @@ def _parse_org_info(soup_profile_info):
 		if not isinstance(soup_child, bs4.Tag):
 			continue
 		if soup_child.name == 'dt':
-			name = unicode(soup_child.b.string)
+			name = str(soup_child.b.string)
 			value = None
 		if soup_child.name == 'dd':
 			if soup_child.a:
@@ -76,7 +76,7 @@ def _parse_org_info(soup_profile_info):
 							item['owner'] = True
 					value.append(item)
 			else:
-				value = unicode(soup_child.string)
+				value = str(soup_child.string)
 
 			if name == 'Type':
 				org_info['type'] = value
@@ -86,7 +86,7 @@ def _parse_org_info(soup_profile_info):
 				org_info['staff'] = value
 			if name == 'Description':
 				if soup_child.span:
-					org_info['description'] = unicode(soup_child.span.string)
+					org_info['description'] = str(soup_child.span.string)
 				else:
 					org_info['description'] = value
 	return org_info
@@ -105,8 +105,8 @@ def _parse_org_releases(table):
 		if len(soup_cells)<6:
 			continue
 
-		release['role'] = unicode(soup_cells[0].span.string)
-		release['catalog'] = unicode(soup_cells[1].span.string)
+		release['role'] = str(soup_cells[0].span.string)
+		release['catalog'] = str(soup_cells[1].span.string)
 		if soup_cells[2].img:
 			release['reprint'] = True
 
@@ -116,7 +116,7 @@ def _parse_org_releases(table):
 			event = {}
 			event['link'] = link
 			event['name'] = soup_cells[4].a['title']
-			event['shortname'] = unicode(soup_cells[4].a.span.string)
+			event['shortname'] = str(soup_cells[4].a.span.string)
 			release['event'] = event
 
 		if soup_cells[5].span.a:
@@ -141,12 +141,12 @@ def _parse_websites(soup_websites):
 	""" Given an array of divs containing website information """
 	sites = {}
 	for soup_category in soup_websites.find_all('div', recursive=False):
-		category = unicode(soup_category.b.string)
+		category = str(soup_category.b.string)
 		soup_links = soup_category.find_all('a', recursive=False)
 		links = []
 		for soup_link in soup_links:
 			link = soup_link['href']
-			name = unicode(soup_link.string)
+			name = str(soup_link.string)
 			if link[0:9] == '/redirect':
 				link = utils.strip_redirect(link)
 			links.append({"link":link, "name":name})

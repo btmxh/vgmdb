@@ -40,7 +40,7 @@ class TestRDF(unittest.TestCase):
 		outputter = output.get_outputter(config, output_format, None)
 		output_data = outputter(self.outputter_type, data, filterkey=filterkey)
 		debugoutput = output_data
-		if isinstance(debugoutput, unicode):
+		if isinstance(debugoutput, str):
 			debugoutput = output_data.encode('utf-8')
 		file('/tmp/rdftest.%s.%s'%(self.outputter_type,output_format),'w').write(debugoutput)
 		graph = Graph()
@@ -57,7 +57,7 @@ class TestRDF(unittest.TestCase):
 				query = query.replace('@base/', config.BASE_URL)
 			query = query.replace('@base', config.BASE_URL)
 			return query
-		for query, count in test_count_results.items():
+		for query, count in list(test_count_results.items()):
 			query = replace_base(query)
 			try:
 				res = graph.query(query, initNs=namespaces)
@@ -65,9 +65,9 @@ class TestRDF(unittest.TestCase):
 				self.fail("Invalid query: %s\n%s"%(query,sys.exc_info()[1]))
 				raise
 			self.assertEqual(len(res), count, "Results for %s: %s vs %s"%(query, len(res), count))
-		for query, answer in test_first_result.items():
+		for query, answer in list(test_first_result.items()):
 			query = replace_base(query)
-			if isinstance(answer, str) or isinstance(answer, unicode):
+			if isinstance(answer, str) or isinstance(answer, str):
 				answer = replace_base(answer)
 			try:
 				res = graph.query(query, initNs=namespaces)

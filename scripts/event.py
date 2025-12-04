@@ -11,4 +11,4 @@ def parse_event(event):
 	event_info = vgmdb.fetch.event(event, use_cache=False)
 	return json.dumps(event_info, sort_keys=True, indent=4, separators=(',',': '), ensure_ascii=False)
 if __name__ == '__main__' and len(sys.argv) > 1:
-	print parse_event(sys.argv[1]).encode('utf-8')
+	print(parse_event(sys.argv[1]).encode('utf-8'))

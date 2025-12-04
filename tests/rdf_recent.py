@@ -6,7 +6,7 @@ import unittest
 from ._rdf import TestRDF
 from vgmdb.parsers import recent
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestRecentRDF(TestRDF):
 	data_parser = lambda self,x: recent.parse_page(x)

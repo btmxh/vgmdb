@@ -14,12 +14,12 @@ class TestAlbumList(unittest.TestCase):
 		list_code = file(os.path.join(base, 'albumlist.html'), 'r').read()
 		list = albumlist.parse_page(list_code)
 
-		self.assertEqual(u"album/12991", list['albums'][0]['link'])
-		self.assertEqual(u"f", list['albums'][0]['titles']['en'])
-		self.assertEqual(u"GFCA-7", list['albums'][1]['catalog'])
-		self.assertEqual(u"2002-07-13", list['albums'][2]['release_date'])
-		self.assertEqual(u"2007-08", list['albums'][22]['release_date'])
-		self.assertEqual(u"1999", list['albums'][23]['release_date'])
+		self.assertEqual("album/12991", list['albums'][0]['link'])
+		self.assertEqual("f", list['albums'][0]['titles']['en'])
+		self.assertEqual("GFCA-7", list['albums'][1]['catalog'])
+		self.assertEqual("2002-07-13", list['albums'][2]['release_date'])
+		self.assertEqual("2007-08", list['albums'][22]['release_date'])
+		self.assertEqual("1999", list['albums'][23]['release_date'])
 
 
 if __name__ == '__main__':

@@ -18,9 +18,9 @@ mime_names = {"text/html": "html",
 
 class TestDummyOutput(unittest.TestCase):
 	def setUp(self):
-		for (key,value) in mime_names.items():
+		for (key,value) in list(mime_names.items()):
 			output.add_mime_name(key, value)
-		for name in mime_names.values():
+		for name in list(mime_names.values()):
 			output.add_name_handler(key, lambda x,y:x)
 
 	def test_decide_format(self):

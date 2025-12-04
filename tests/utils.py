@@ -12,12 +12,12 @@ class TestUtils(unittest.TestCase):
 		pass
 
 	def test_is_english(self):
-		self.assertTrue(utils.is_english(u"This is a test"))
-		self.assertTrue(utils.is_english(u"Th!s 1s 4 test"))
-		self.assertTrue(utils.is_english(u"Varèse Sarabande"))
-		self.assertFalse(utils.is_english(u"白河ことり"))
-		self.assertFalse(utils.is_english(u"東方人 -TOHO BEAT-"))
-		self.assertTrue(utils.is_english(u"Marcin Przybyłowicz"))
+		self.assertTrue(utils.is_english("This is a test"))
+		self.assertTrue(utils.is_english("Th!s 1s 4 test"))
+		self.assertTrue(utils.is_english("Varèse Sarabande"))
+		self.assertFalse(utils.is_english("白河ことり"))
+		self.assertFalse(utils.is_english("東方人 -TOHO BEAT-"))
+		self.assertTrue(utils.is_english("Marcin Przybyłowicz"))
 
 	def test_date_parse(self):
 		date = "Aug 3, 2006 09:33 AM"
@@ -87,7 +87,7 @@ class TestUtils(unittest.TestCase):
 		    'English Gaelic':'gd',
 		    'Gaelic':'gd'
 		}
-		for test,expected in tests.items():
+		for test,expected in list(tests.items()):
 			got = outpututils.normalize_language_codes(test)
 			self.assertEqual(expected, got)
 

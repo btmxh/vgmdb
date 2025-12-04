@@ -1,5 +1,5 @@
 import logging
-import cdjapan_parse as parser
+from . import cdjapan_parse as parser
 from ._utils import squash_str,find_best_match, primary_name
 
 class NullHandler(logging.Handler):
@@ -117,5 +117,5 @@ def search_series_name(name):
 
 
 if __name__ == '__main__':
-	print(search_artist_name('nobuo uematsu'))
-	print(search_series_name('final fantasy'))
+	print((search_artist_name('nobuo uematsu')))
+	print((search_series_name('final fantasy')))

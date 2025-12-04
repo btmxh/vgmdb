@@ -6,7 +6,7 @@ import unittest
 from ._rdf import TestRDF
 from vgmdb.parsers import search
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestSearchRDF(TestRDF):
 	data_parser = lambda self,x: search.parse_page(x)
@@ -24,13 +24,13 @@ class TestSearchRDF(TestRDF):
 			"select ?search where { ?search rdf:type schema:CreativeWork . }" : 1
 		}
 		test_first_result = {
-			"select ?name where { <@basealbum/15634#subject> dcterms:title ?name . FILTER(lang(?name)='en') }" : u"Vagrant Story Original Soundtrack",
-			"select ?name where { <@basealbum/15634#subject> schema:name ?name . FILTER(lang(?name)='en') }" : u"Vagrant Story Original Soundtrack",
-			"select ?name where { <@baseartist/7195#subject> foaf:name ?name . FILTER(lang(?name)='en') }" : u"Samuel Day",
-			"select ?name where { <@baseorg/203#subject> foaf:name ?name . FILTER(lang(?name)='en') }" : u"VAGRANCY",
-			"select ?name where { <@baseorg/203#subject> schema:name ?name . FILTER(lang(?name)='en') }" : u"VAGRANCY",
-			"select ?name where { <@baseproduct/427#subject> schema:name ?name . FILTER(lang(?name)='en') }" : u"Vagrant Story",
-			"select ?name where { <@baseproduct/427#subject> dcterms:title ?name . FILTER(lang(?name)='en') }" : u"Vagrant Story"
+			"select ?name where { <@basealbum/15634#subject> dcterms:title ?name . FILTER(lang(?name)='en') }" : "Vagrant Story Original Soundtrack",
+			"select ?name where { <@basealbum/15634#subject> schema:name ?name . FILTER(lang(?name)='en') }" : "Vagrant Story Original Soundtrack",
+			"select ?name where { <@baseartist/7195#subject> foaf:name ?name . FILTER(lang(?name)='en') }" : "Samuel Day",
+			"select ?name where { <@baseorg/203#subject> foaf:name ?name . FILTER(lang(?name)='en') }" : "VAGRANCY",
+			"select ?name where { <@baseorg/203#subject> schema:name ?name . FILTER(lang(?name)='en') }" : "VAGRANCY",
+			"select ?name where { <@baseproduct/427#subject> schema:name ?name . FILTER(lang(?name)='en') }" : "Vagrant Story",
+			"select ?name where { <@baseproduct/427#subject> dcterms:title ?name . FILTER(lang(?name)='en') }" : "Vagrant Story"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def test_list_rdfa(self):

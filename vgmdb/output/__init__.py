@@ -3,13 +3,14 @@ from vgmdb.accept import parse_accept_header
 import vgmdb.config
 
 # import submodules
-import html
-import json
-import yaml
-import turtle
-import rdfxml
-import jsonl
-import jsonp
+from . import html
+from . import json
+from . import yaml
+from . import turtle
+from . import rdfxml
+from . import jsonl
+from . import jsonp
+import importlib
 
 # As output modules are loaded the name_outputters and
 # add_name_handler will be populated
@@ -27,7 +28,7 @@ def add_name_module(name, module):
 	name_modules[name] = module
 def unload_module(name):
 	global mime_names
-	new_mime_names = dict([(k,mime_names[k]) for k in mime_names.keys() if mime_names[k] != name])
+	new_mime_names = dict([(k,mime_names[k]) for k in list(mime_names.keys()) if mime_names[k] != name])
 	mime_names = new_mime_names
 	del name_outputters[name]
 	del name_modules[name]
@@ -50,7 +51,7 @@ def reload_module(name):
 	try:
 		module = name_modules[name]
 		unload_module(name)
-		reload(module)
+		importlib.reload(module)
 		load_module(module)
 	except:
 		sys.stderr.write("Couldn't create outputter %s: %s\n"%(name, sys.exc_info()[1]))
@@ -60,7 +61,7 @@ def reload_module(name):
 
 def load_plugins():
 	from types import ModuleType
-	for module in globals().values():
+	for module in list(globals().values()):
 		if isinstance(module, ModuleType) and \
 		   hasattr(module, 'name') and \
 		   hasattr(module, 'mimetypes') and \
@@ -78,10 +79,10 @@ def decide_format(forced, accept, useragent=''):
 		format = "html"
 	all_accepts = parse_accept_header(accept) or []
 	for accepts in all_accepts:
-		if accepts[0] in mime_names.keys():
+		if accepts[0] in list(mime_names.keys()):
 			format = mime_names[accepts[0]]
 			break
-	if forced in mime_names.values():
+	if forced in list(mime_names.values()):
 		format = forced
 	return format
 

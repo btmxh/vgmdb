@@ -45,80 +45,67 @@ class TestJsonSchemaMeta(type):
 			dict[test_name] = test
 		return type.__new__(mcs, name, bases, dict)
 
-class TestJsonAlbums(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonAlbums(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "album.json")
 	glob_path = "%s/album_*html" % base
 	import vgmdb.parsers.album as parser_module
 
-class TestJsonArtists(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonArtists(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "artist.json")
 	glob_path = "%s/artist_*html" % base
 	import vgmdb.parsers.artist as parser_module
 
-class TestJsonOrgs(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonOrgs(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "org.json")
 	glob_path = "%s/org_*html" % base
 	import vgmdb.parsers.org as parser_module
 
-class TestJsonEvents(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonEvents(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "event.json")
 	glob_path = "%s/event_*html" % base
 	import vgmdb.parsers.event as parser_module
 
-class TestJsonProducts(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonProducts(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "product.json")
 	glob_path = "%s/product_*html" % base
 	import vgmdb.parsers.product as parser_module
 
-class TestJsonReleases(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonReleases(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "release.json")
 	glob_path = "%s/release_*html" % base
 	import vgmdb.parsers.release as parser_module
 
-class TestJsonSearch(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonSearch(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "search.json")
 	glob_path = "%s/search*html" % base
 	import vgmdb.parsers.search as parser_module
 
-class TestJsonAlbumList(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonAlbumList(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "albumlist.json")
 	glob_path = "%s/albumlist.html" % base
 	import vgmdb.parsers.albumlist as parser_module
 
-class TestJsonArtistList(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonArtistList(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "artistlist.json")
 	glob_path = "%s/artistlist.html" % base
 	import vgmdb.parsers.artistlist as parser_module
 
-class TestJsonOrgList(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonOrgList(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "orglist.json")
 	glob_path = "%s/orglist.html" % base
 	import vgmdb.parsers.orglist as parser_module
 
-class TestJsonProductList(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonProductList(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "productlist.json")
 	glob_path = "%s/productlist.html" % base
 	import vgmdb.parsers.productlist as parser_module
 
-class TestJsonEventList(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonEventList(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "eventlist.json")
 	glob_path = "%s/eventlist.html" % base
 	import vgmdb.parsers.eventlist as parser_module
 
-class TestJsonRecent(unittest.TestCase):
-	__metaclass__ = TestJsonSchemaMeta
+class TestJsonRecent(unittest.TestCase, metaclass=TestJsonSchemaMeta):
 	schema_path = os.path.join(project, "schema", "recent.json")
 	glob_path = "%s/recent*html" % base
 	import vgmdb.parsers.recent as parser_module

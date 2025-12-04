@@ -6,7 +6,7 @@ import unittest
 from ._rdf import TestRDF
 from vgmdb.parsers import orglist
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestOrglistRDF(TestRDF):
 	data_parser = lambda self,x: orglist.parse_page(x)
@@ -22,10 +22,10 @@ class TestOrglistRDF(TestRDF):
 			"select ?title where { <@baseorg/203#subject> schema:name ?title . }" : 1
 		}
 		test_first_result = {
-			"select ?name where { <@baseorg/529#subject> foaf:name ?name . }" : u"Studio Ghibli Records",
-			"select ?name where { <@baseorg/529#subject> schema:name ?name . }" : u"Studio Ghibli Records",
-			"select ?name where { <@baseorg/203#subject> foaf:name ?name . }" : u"VAGRANCY",
-			"select ?name where { <@baseorg/203#subject> schema:name ?name . }" : u"VAGRANCY",
+			"select ?name where { <@baseorg/529#subject> foaf:name ?name . }" : "Studio Ghibli Records",
+			"select ?name where { <@baseorg/529#subject> schema:name ?name . }" : "Studio Ghibli Records",
+			"select ?name where { <@baseorg/203#subject> foaf:name ?name . }" : "VAGRANCY",
+			"select ?name where { <@baseorg/203#subject> schema:name ?name . }" : "VAGRANCY",
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def run_list_tests_S(self, graph):
@@ -36,8 +36,8 @@ class TestOrglistRDF(TestRDF):
 			"select ?title where { <@baseorg/203#subject> schema:name ?title . }" : 0
 		}
 		test_first_result = {
-			"select ?name where { <@baseorg/529#subject> foaf:name ?name . }" : u"Studio Ghibli Records",
-			"select ?name where { <@baseorg/529#subject> schema:name ?name . }" : u"Studio Ghibli Records"
+			"select ?name where { <@baseorg/529#subject> foaf:name ?name . }" : "Studio Ghibli Records",
+			"select ?name where { <@baseorg/529#subject> schema:name ?name . }" : "Studio Ghibli Records"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def run_list_tests_V(self, graph):
@@ -48,8 +48,8 @@ class TestOrglistRDF(TestRDF):
 			"select ?title where { <@baseorg/203#subject> schema:name ?title . }" : 1
 		}
 		test_first_result = {
-			"select ?name where { <@baseorg/203#subject> foaf:name ?name . }" : u"VAGRANCY",
-			"select ?name where { <@baseorg/203#subject> schema:name ?name . }" : u"VAGRANCY",
+			"select ?name where { <@baseorg/203#subject> foaf:name ?name . }" : "VAGRANCY",
+			"select ?name where { <@baseorg/203#subject> schema:name ?name . }" : "VAGRANCY",
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def test_list_rdfa_S(self):

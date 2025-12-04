@@ -6,7 +6,7 @@ import unittest
 from ._rdf import TestRDF
 from vgmdb.parsers import productlist
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestArtistlistRDF(TestRDF):
 	data_parser = lambda self,x: productlist.parse_page(x)
@@ -19,8 +19,8 @@ class TestArtistlistRDF(TestRDF):
 			"select ?product where { ?product rdf:type schema:CreativeWork . }" : 30
 		}
 		test_first_result = {
-			"select ?name where { <@baseproduct/856#subject> dcterms:title ?name . }" : u"Darius",
-			"select ?name where { <@baseproduct/856#subject> schema:name ?name . }" : u"Darius"
+			"select ?name where { <@baseproduct/856#subject> dcterms:title ?name . }" : "Darius",
+			"select ?name where { <@baseproduct/856#subject> schema:name ?name . }" : "Darius"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def test_list_rdfa(self):

@@ -6,7 +6,7 @@ import unittest
 from ._rdf import TestRDF
 from vgmdb.parsers import eventlist
 from vgmdb.config import BASE_URL
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 class TestEventlistRDF(TestRDF):
 	data_parser = lambda self,x: eventlist.parse_page(x)
@@ -22,10 +22,10 @@ class TestEventlistRDF(TestRDF):
 			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : 1
 		}
 		test_first_result = {
-			"select ?name where { <@baseevent/44#subject> schema:name ?name . FILTER(lang(?name)='en')}" : u"BrightSeason9",
-			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : u"M3-2013 Spring",
-			"select ?name where { <@baseevent/22#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : u"コミックマーケット60",
-			"select ?name where { <@baseevent/157#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : u"コミックマーケット８４"
+			"select ?name where { <@baseevent/44#subject> schema:name ?name . FILTER(lang(?name)='en')}" : "BrightSeason9",
+			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : "M3-2013 Spring",
+			"select ?name where { <@baseevent/22#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : "コミックマーケット60",
+			"select ?name where { <@baseevent/157#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : "コミックマーケット８４"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def run_list_tests_2001(self, graph):
@@ -36,8 +36,8 @@ class TestEventlistRDF(TestRDF):
 			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : 0
 		}
 		test_first_result = {
-			"select ?name where { <@baseevent/44#subject> schema:name ?name . FILTER(lang(?name)='en')}" : u"BrightSeason9",
-			"select ?name where { <@baseevent/22#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : u"コミックマーケット60"
+			"select ?name where { <@baseevent/44#subject> schema:name ?name . FILTER(lang(?name)='en')}" : "BrightSeason9",
+			"select ?name where { <@baseevent/22#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : "コミックマーケット60"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def run_list_tests_2013(self, graph):
@@ -48,8 +48,8 @@ class TestEventlistRDF(TestRDF):
 			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : 1
 		}
 		test_first_result = {
-			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : u"M3-2013 Spring",
-			"select ?name where { <@baseevent/157#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : u"コミックマーケット８４"
+			"select ?name where { <@baseevent/158#subject> schema:name ?name . FILTER(lang(?name)='en')}" : "M3-2013 Spring",
+			"select ?name where { <@baseevent/157#subject> schema:name ?name . FILTER(lang(?name)='ja')}" : "コミックマーケット８４"
 		}
 		self.run_tests(graph, test_count_results, test_first_result)
 	def test_list_rdfa_2001(self):

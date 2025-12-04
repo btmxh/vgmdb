@@ -48,7 +48,7 @@ def log_info(link, info):
 
 def log_result(link, result):
 	if result:
-		print("Failure with %s: %s" % (link, result))
+		print(("Failure with %s: %s" % (link, result)))
 	with open('result.csv', 'a') as output:
 		line = '%s,%s\n' % (link, result)
 		output.write(line)
@@ -58,7 +58,7 @@ def try_list():
 	initial = fetch_list()
 	if isinstance(initial[mode['plural']], dict):
 		# if all the letters are provided already
-		for group in initial[mode['plural']].values():
+		for group in list(initial[mode['plural']].values()):
 			try_list_group(group)
 	else:
 		# if we have to iterate through pages of letters

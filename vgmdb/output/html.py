@@ -1,5 +1,5 @@
 from .commonutils import normalize_language_codes
-import urlparse
+import urllib.parse
 import datetime
 
 mimetypes = ['text/html']
@@ -39,7 +39,7 @@ class outputter(object):
 
 	def artist_type(self, artist_data):
 		types = []
-		if artist_data.has_key('members') and len(artist_data['members']) > 0:
+		if 'members' in artist_data and len(artist_data['members']) > 0:
 			types.append('schema:MusicGroup')
 			types.append('foaf:Organization')
 		else:
@@ -56,11 +56,11 @@ class outputter(object):
 			return '<span lang="%s" xml:lang="%s">%s</span>'%(lang, lang, self._escape(name))
 	def lang_names(self, names, rel="schema:name foaf:name"):
 		segments = []
-		if isinstance(names, str) or isinstance(names, unicode):
+		if isinstance(names, str) or isinstance(names, str):
 			segments.append(self.span_name('en', names, rel))
 		else:
 			names = dict(names)
-			if names.has_key('en'):
+			if 'en' in names:
 				segments.append(self.span_name('en', names['en'], rel))
 				del names['en']
 			for lang in sorted(names.keys()):
@@ -75,12 +75,12 @@ class outputter(object):
 			link = link[1:]
 		return link
 	def absolute_linkhref(self, link):
-		return urlparse.urljoin(self._config.BASE_URL, self.linkhref(link))
+		return urllib.parse.urljoin(self._config.BASE_URL, self.linkhref(link))
 	def absolute_linkhref_scheme(self, link):
 		base_url = self._config.BASE_URL
 		if base_url[0:2] == '//':
 			base_url = 'http:' + base_url
-		return urlparse.urljoin(base_url, self.linkhref(link))
+		return urllib.parse.urljoin(base_url, self.linkhref(link))
 
 	def resource_attr(self, href, type='resource', hash="subject"):
 		if href != None and len(href)>0:
@@ -103,9 +103,9 @@ class outputter(object):
 		if len(href)>0 and href[0] == '/':
 			href = href[1:]
 		if len(href) > 0:
-			result = u'<a href="%s" about="%s#subject"%s>%s</a>'%(href,href,typeof,text)
+			result = '<a href="%s" about="%s#subject"%s>%s</a>'%(href,href,typeof,text)
 		else:
-			result = u'<a%s>%s</a>'%(typeof,text)
+			result = '<a%s>%s</a>'%(typeof,text)
 		if autoescape:
 			result = self._Markup(result)
 		return result
