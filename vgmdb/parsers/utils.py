@@ -129,7 +129,22 @@ def is_english(text):
     if count == 0:
         return True  # by default
     else:
-        return (count_english / count) > 0.5
+        # return (count_english / count) > 0.5
+        # here, python 2 counts multibyte chars as multiple characters, so
+        # we will have to adjust the ratio threshold to make it work on python 3
+
+        # assuming the string is only english and japanese characters,
+        # count_english_py2 / count_py2 > THRESHOLD
+        # => count_english_py2 > THRESHOLD * (count_english_py2 + count_japanese_py2)
+        # => count_english_py2 * (1 - THRESHOLD) > THRESHOLD * AVG_BYTES_PER_JP_CHAR * count_japanese_py3
+        # => count_english_py3 * (1 - THRESHOLD) > THRESHOLD * AVG_BYTES_PER_JP_CHAR * (count_py3 - count_english_py3)
+        # => count_english_py3 > (THRESHOLD * AVG_BYTES_PER_JP_CHAR * count_py3) / (1 - THRESHOLD + THRESHOLD * AVG_BYTES_PER_JP_CHAR)
+        THRESHOLD = 0.5
+        AVERAGE_BYTES_PER_JP_CHAR = 3
+        PY3_THRESHOLD = (THRESHOLD * AVERAGE_BYTES_PER_JP_CHAR) / (
+            1 - THRESHOLD + THRESHOLD * AVERAGE_BYTES_PER_JP_CHAR
+        )
+        return count_english > PY3_THRESHOLD * count
 
 
 def parse_date_time(time):
