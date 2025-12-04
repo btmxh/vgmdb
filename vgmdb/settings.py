@@ -1,11 +1,11 @@
 # base settings
-BASE_URL = '//vgmdb.info/'
+BASE_URL = "//vgmdb.info/"
 AUTO_RELOAD = False
-MEMCACHE_SERVERS = ['127.0.0.1:11211']
+MEMCACHE_SERVERS = ["127.0.0.1:11211"]
 MEMCACHE_ARGS = {}
-CELERY_BROKER = 'amqp://guest@127.0.0.1//'
-CELERY_RESULT_BACKEND = 'cache'
-CELERY_CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+CELERY_BROKER = "amqp://guest@127.0.0.1//"
+CELERY_RESULT_BACKEND = "cache"
+CELERY_CACHE_BACKEND = "memcached://127.0.0.1:11211/"
 CELERY_PING = True
 DATA_BACKGROUND = False
 SEARCH_INDEX = False
@@ -26,12 +26,13 @@ SPOTIFY_ID = None
 SPOTIFY_SECRET = None
 
 import logging
+
 logger = logging.getLogger(__name__)
 try:
-	from .autoload_settings import *
+    from .autoload_settings import *
 except Exception as e:
-	logging.warning("Could not load autoload_settings: %s" % (e,))
+    logging.warning("Could not load autoload_settings: %s" % (e,))
 try:
-	from .local_settings import *
+    from .local_settings import *
 except Exception as e:
-	logging.warning("Could not load local_settings: %s" % (e,))
+    logging.warning("Could not load local_settings: %s" % (e,))

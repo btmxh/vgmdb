@@ -1,5 +1,5 @@
 # From https://gist.github.com/samuraisam/2714195
-# The author disclaims copyright to this source code.  In place of a legal 
+# The author disclaims copyright to this source code.  In place of a legal
 # notice, here is a blessing:
 #
 #    May you do good and not evil.
@@ -8,6 +8,7 @@
 #
 # It is based on a snipped found in this project:
 #   https://github.com/martinblech/mimerender
+
 
 def parse_accept_header(accept):
     """
@@ -18,7 +19,7 @@ def parse_accept_header(accept):
 
         application/vnd.yourcompany.yourproduct-v1.1+json
 
-    It will actually convert the vendor and version into parameters and 
+    It will actually convert the vendor and version into parameters and
     convert the content type into `application/json` so appropriate content
     negotiation decisions can be made.
 
@@ -33,31 +34,30 @@ def parse_accept_header(accept):
         media_params = []
         # convert vendor-specific content types into something useful (see
         # docstring)
-        if '/' in media_type:
-            typ, subtyp = media_type.split('/')
+        if "/" in media_type:
+            typ, subtyp = media_type.split("/")
         else:
-            typ, subtyp = ('', '')
+            typ, subtyp = ("", "")
         # check for a + in the sub-type
-        if '+' in subtyp:
+        if "+" in subtyp:
             # if it exists, determine if the subtype is a vendor-specific type
-            vnd, sep, extra = subtyp.partition('+')
-            if vnd.startswith('vnd'):
+            vnd, sep, extra = subtyp.partition("+")
+            if vnd.startswith("vnd"):
                 # and then... if it ends in something like "-v1.1" parse the
                 # version out
-                if '-v' in vnd:
-                    vnd, sep, rest = vnd.rpartition('-v')
+                if "-v" in vnd:
+                    vnd, sep, rest = vnd.rpartition("-v")
                     if len(rest):
                         # add the version as a media param
                         try:
-                            version = media_params.append(('version', 
-                                                           float(rest)))
+                            version = media_params.append(("version", float(rest)))
                         except ValueError:
-                            version = 1.0 # could not be parsed
+                            version = 1.0  # could not be parsed
                 # add the vendor code as a media param
-                media_params.append(('vendor', vnd))
+                media_params.append(("vendor", vnd))
                 # and re-write media_type to something like application/json so
                 # it can be used usefully when looking up emitters
-                media_type = '{0}/{1}'.format(typ, extra)
+                media_type = "{0}/{1}".format(typ, extra)
         q = 1.0
         for part in parts:
             (key, value) = part.lstrip().split("=", 1)

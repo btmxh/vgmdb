@@ -6,11 +6,12 @@ import sys, os, bottle
 base = os.path.dirname(__file__)
 sys.path = [base] + sys.path
 if os.getcwd() != base:
-	os.chdir(base)
+    os.chdir(base)
 
 import logging
+
 logging.basicConfig(level=logging.ERROR)
 
 import vgmdb.main
-application = bottle.default_app()
 
+application = bottle.default_app()
