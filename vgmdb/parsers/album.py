@@ -431,7 +431,7 @@ def _parse_section_album_stats(soup_section):
                     del product["link"]
                 product["names"] = utils.parse_names(soup_product)
                 album_info["products"].append(product)
-            text = soup_div.find("br").__next__
+            text = soup_div.find("br").next_sibling
             if not isinstance(text, bs4.Tag):
                 for productname in [
                     x.strip() for x in text.split(",") if len(x.strip()) > 0

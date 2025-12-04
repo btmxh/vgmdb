@@ -143,13 +143,13 @@ def _parse_profile_info(soup_profile_left):
         item_list = []
         list_item_pre = soup_item.br
         while list_item_pre:
-            soup_item_data = list_item_pre.__next__
+            soup_item_data = list_item_pre.next_sibling
             # plain text entry in the section
             if isinstance(soup_item_data, bs4.NavigableString):
                 texts = []
                 while isinstance(soup_item_data, bs4.NavigableString):
                     texts.append(str(soup_item_data))
-                    soup_item_data = soup_item_data.__next__
+                    soup_item_data = soup_item_data.next_sibling
                 text = "".join(texts).strip()
                 if len(text) > 0:
                     item_list.append(text)
