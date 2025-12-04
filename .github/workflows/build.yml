@@ -29,7 +29,7 @@ jobs:
   dockerize:
     needs: unitTest
     runs-on: ubuntu-24.04
-    if: github.repository == 'Lemmmy/vgmdb'
+    if: github.repository == 'btmxh/vgmdb'
     strategy:
       matrix:
         platform: [amd64, arm64]
@@ -91,7 +91,7 @@ jobs:
   dockerfinalize:
     needs: dockerize
     runs-on: ubuntu-24.04
-    if: github.repository == 'Lemmmy/vgmdb'
+    if: github.repository == 'btmxh/vgmdb'
     steps:
       - name: Login to GitHub Container Registry
         run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -109,7 +109,7 @@ jobs:
           docker manifest push ghcr.io/$REPO_LC\_web:$REV
 
       - name: Tag and push the latest images
-        if: github.event.ref == 'refs/heads/lemmmy'
+        if: github.event.ref == 'refs/heads/btmxh'
         run: |
           docker manifest create ghcr.io/$REPO_LC:latest $(docker manifest inspect ghcr.io/$REPO_LC:$REV-amd64 >/dev/null && echo ghcr.io/$REPO_LC:$REV-amd64) $(docker manifest inspect ghcr.io/$REPO_LC:$REV-arm64 >/dev/null && echo ghcr.io/$REPO_LC:$REV-arm64)
           docker manifest push ghcr.io/$REPO_LC:latest
