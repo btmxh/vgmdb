@@ -4,6 +4,8 @@ from . import utils
 
 fetch_url = lambda id: utils.url_info_page("org", id)
 fetch_page = lambda id: utils.fetch_info_page("org", id)
+# python 2 and 3 compatibility
+unicode = lambda x: x
 
 
 def parse_page(html_source):
@@ -113,29 +115,63 @@ def _parse_org_releases(table):
     for soup_row in soup_rows[1:]:
         release = {}
         soup_cells = soup_row.find_all("td")
-        if len(soup_cells) < 6:
+        # Skip empty rows
+        if len(soup_cells) < 1:
             continue
 
-        release["role"] = str(soup_cells[0].span.string)
-        release["catalog"] = str(soup_cells[1].span.string)
-        if soup_cells[2].img:
+        # Handle both old (6 cells) and new (5 cells) HTML structures
+        # Old: role, catalog, reprint, album, event, date
+        # New: catalog, reprint, album, event, date (role column removed)
+        if len(soup_cells) >= 6:
+            # Old structure with role column
+            catalog_idx = 1
+            reprint_idx = 2
+            album_idx = 3
+            event_idx = 4
+            date_idx = 5
+            if soup_cells[0].span and soup_cells[0].span.string:
+                release["role"] = unicode(soup_cells[0].span.string)
+        elif len(soup_cells) >= 5:
+            # New structure without role column
+            catalog_idx = 0
+            reprint_idx = 1
+            album_idx = 2
+            event_idx = 3
+            date_idx = 4
+        else:
+            continue
+
+        # Parse catalog
+        if soup_cells[catalog_idx].span and soup_cells[catalog_idx].span.string:
+            release["catalog"] = unicode(soup_cells[catalog_idx].span.string)
+
+        # Parse reprint indicator
+        if soup_cells[reprint_idx].img:
             release["reprint"] = True
 
-        if soup_cells[4].a:  # event link
-            link = soup_cells[4].a["href"]
+        # Parse event
+        if soup_cells[event_idx].a:
+            link = soup_cells[event_idx].a["href"]
             link = utils.trim_absolute(link)
             event = {}
             event["link"] = link
-            event["name"] = soup_cells[4].a["title"]
-            event["shortname"] = str(soup_cells[4].a.span.string)
+            event["name"] = soup_cells[event_idx].a["title"]
+            event["shortname"] = unicode(soup_cells[event_idx].a.span.string)
             release["event"] = event
 
-        if soup_cells[5].span.a:
-            release["date"] = utils.parse_date_time(soup_cells[5].span.a.string)
-        else:
-            release["date"] = utils.parse_date_time(soup_cells[5].span.string)
+        # Parse date
+        if soup_cells[date_idx].span:
+            if soup_cells[date_idx].span.a:
+                release["date"] = utils.parse_date_time(
+                    soup_cells[date_idx].span.a.string
+                )
+            else:
+                release["date"] = utils.parse_date_time(
+                    soup_cells[date_idx].span.string
+                )
 
-        soup_album = soup_cells[3]
+        # Parse album
+        soup_album = soup_cells[album_idx]
         if soup_album.a:
             link = soup_album.a["href"]
             link = utils.trim_absolute(link)
