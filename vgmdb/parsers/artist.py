@@ -1,3 +1,4 @@
+from sys import stderr
 import bs4
 
 from . import utils
@@ -156,6 +157,27 @@ def _parse_profile_info(soup_profile_left):
             # link entry
             if isinstance(soup_item_data, bs4.Tag):
                 item_data = {}
+                # outdated alias format
+                if soup_item_data.name == "div" and soup_item_data.a:
+                    item_data["link"] = utils.trim_absolute(soup_item_data.a["href"])
+                    names = [str(soup_item_data.a.string)]
+                    for alt_name in soup_item_data.find_all("span"):
+                        if alt_name.name != "span":
+                            continue
+                        # HACK: skip invisible spans
+                        if "display:none" in alt_name.attrs.get("style", "").replace(
+                            " ", ""
+                        ):
+                            continue
+                        name = alt_name.string.strip()
+                        if name[0] == "(" and name[-1] == ")":
+                            name = name[1:-1].strip()
+                        names.append(name)
+                    item_data["names"] = {
+                        ("en" if utils.is_english(name) else "ja"): name
+                        for name in names
+                    }
+                    item_list.append(item_data)
                 if soup_item_data.name == "a":
                     item_data["link"] = utils.trim_absolute(soup_item_data["href"])
                     item_data["names"] = {"en": str(soup_item_data.string)}
@@ -200,7 +222,7 @@ def _parse_profile_info(soup_profile_left):
                             str(soup_item_data.string) + soup_item_data.next_sibling
                         )
 
-            list_item_pre = list_item_pre.find_next_sibling("br")
+            list_item_pre = list_item_pre.next_sibling
         if len(item_list) == 0:
             continue
         # what item headings indicate people, and should have names
