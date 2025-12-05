@@ -1,9 +1,12 @@
 # -*- coding: UTF-8 -*-
+from io import StringIO
 import os
 import sys
 import datetime
 import unittest
 from rdflib import Graph, URIRef
+
+from pyRdfa import pyRdfa
 
 from vgmdb import output
 from vgmdb import config
@@ -46,14 +49,18 @@ class TestRDF(unittest.TestCase):
         debugoutput = output_data
         if isinstance(debugoutput, str):
             debugoutput = output_data.encode("utf-8")
-        open("/tmp/rdftest.%s.%s" % (self.outputter_type, output_format), "w").write(
+        open("/tmp/rdftest.%s.%s" % (self.outputter_type, output_format), "wb").write(
             debugoutput
         )
-        graph = Graph()
-        graph.parse(data=output_data, format=parse_format, **parse_kwargs)
-        open(
-            "/tmp/rdftest.parsed.%s.%s" % (self.outputter_type, output_format), "w"
-        ).write(graph.serialize(format="turtle"))
+        if parse_format == "rdfa":
+            rdfa_buffer = StringIO(output_data)
+            graph = pyRdfa(media_type="text/html").graph_from_source(rdfa_buffer)
+        else:
+            graph = Graph()
+            graph.parse(data=output_data, format=parse_format, **parse_kwargs)
+            open(
+                "/tmp/rdftest.parsed.%s.%s" % (self.outputter_type, output_format), "w"
+            ).write(graph.serialize(format="turtle"))
         return graph
 
     def load_rdfa_data(self, filename, filterkey=None):

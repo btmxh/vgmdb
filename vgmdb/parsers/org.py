@@ -88,7 +88,7 @@ def _parse_org_info(soup_profile_info):
                             item["owner"] = True
                     value.append(item)
             else:
-                value = str(soup_child.string)
+                value = soup_child.get_text(strip=True)
 
             if name == "Type":
                 org_info["type"] = value
@@ -97,7 +97,7 @@ def _parse_org_info(soup_profile_info):
             if name == "Staff" and isinstance(value, list):
                 org_info["staff"] = value
             if name == "Description":
-                if soup_child.span:
+                if soup_child.span is not None:
                     org_info["description"] = str(soup_child.span.string)
                 else:
                     org_info["description"] = value
@@ -205,7 +205,10 @@ def _parse_websites(soup_websites):
     sites = {}
     for soup_category in soup_websites.find_all("div", recursive=False):
         category = str(soup_category.b.string)
-        soup_links = soup_category.find_all("a", recursive=False)
+        soup_links = soup_category.find_all("span", recursive=True)
+        soup_links = [
+            soup_link.a for soup_link in soup_links if soup_link.a is not None
+        ]
         links = []
         for soup_link in soup_links:
             link = soup_link["href"]

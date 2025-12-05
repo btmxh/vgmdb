@@ -155,8 +155,8 @@ class TestProducts(unittest.TestCase):
         attack = product.parse_page(attack_code)
         self.assertEqual("Attack on Titan", attack["name"])
         self.assertEqual("Franchise", attack["type"])
-        self.assertEqual("2015-08-01", attack["titles"][5]["date"])
-        self.assertEqual("Other", attack["titles"][5]["type"])
+        self.assertEqual("2015-06-27", attack["titles"][5]["date"])
+        self.assertEqual("Other", attack["titles"][6]["type"])
 
 
 if __name__ == "__main__":

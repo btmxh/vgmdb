@@ -50,7 +50,7 @@ def generate(config, type, data):
     else:
         doc = BNode()
         uri = base
-        graph = Graph("IOMemory", doc)
+        graph = Graph("Memory", doc)
     graph.namespace_manager = ns
     return graph
 
@@ -194,7 +194,7 @@ def generate_artist(config, data):
     else:
         doc = BNode()
         uri = base
-    g = Graph("IOMemory", doc)
+    g = Graph("Memory", doc)
     subject = URIRef(uri + "#subject")
     g.add((doc, FOAF.primaryTopic, subject))
 
@@ -289,7 +289,7 @@ def generate_album(config, data):
     else:
         doc = BNode()
         uri = base
-    g = Graph("IOMemory", doc)
+    g = Graph("Memory", doc)
     subject = URIRef(uri + "#subject")
     musicalexpression = URIRef(uri + "#musicalexpression")
     performance = URIRef(uri + "#performance")
@@ -488,7 +488,7 @@ def generate_product(config, data):
     else:
         doc = BNode()
         uri = base
-    g = Graph("IOMemory", doc)
+    g = Graph("Memory", doc)
     subject = URIRef(uri + "#subject")
     g.add((subject, RDF.type, SCHEMA.CreativeWork))
     g.add((subject, DCTERMS.title, Literal(data["name"])))
@@ -557,7 +557,7 @@ def generate_release(config, data):
     else:
         doc = BNode()
         uri = base
-    g = Graph("IOMemory", doc)
+    g = Graph("Memory", doc)
     subject = URIRef(uri + "#subject")
     g.add((subject, RDF.type, SCHEMA.CreativeWork))
     g.add((subject, DCTERMS.title, Literal(data["name"])))
@@ -601,7 +601,7 @@ def generate_org(config, data):
     else:
         doc = BNode()
         uri = base
-    g = Graph("IOMemory", doc)
+    g = Graph("Memory", doc)
     subject = URIRef(uri + "#subject")
     g.add((subject, RDF.type, SCHEMA.Organization))
     g.add((subject, RDF.type, FOAF.Organization))
@@ -643,7 +643,7 @@ def generate_event(config, data):
     else:
         doc = BNode()
         uri = base
-    g = Graph("IOMemory", doc)
+    g = Graph("Memory", doc)
     subject = URIRef(uri + "#subject")
     g.add((subject, RDF.type, SCHEMA.MusicEvent))
     g.add((subject, RDF.type, MO.ReleaseEvent))
@@ -660,13 +660,13 @@ def generate_event(config, data):
 
 
 def generate_albumlist(config, data):
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     add_discography(g, None, data["albums"], rel=[], rev=[])
     return g
 
 
 def generate_artistlist(config, data):
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     for artist_data in data["artists"]:
         artist = URIRef(link(artist_data["link"]) + "#subject")
         add_lang_names(g, artist, artist_data["names"], rel=[FOAF.name])
@@ -675,7 +675,7 @@ def generate_artistlist(config, data):
 
 
 def generate_productlist(config, data):
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     for product_data in data["products"]:
         product = URIRef(link(product_data["link"]) + "#subject")
         add_lang_names(
@@ -692,7 +692,7 @@ def generate_orglist(config, data):
         g.add((org, RDF.type, SCHEMA.Organization))
         g.add((org, RDF.type, FOAF.Organization))
 
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     if isinstance(data["orgs"], list):
         orglist = data["orgs"]
     else:
@@ -710,7 +710,7 @@ def generate_orglist(config, data):
 
 
 def generate_eventlist(config, data):
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     if isinstance(data["events"], list):
         eventlist = data["events"]
     else:
@@ -739,7 +739,7 @@ def generate_eventlist(config, data):
 
 
 def generate_search(config, data):
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     for section in list(data["results"].keys()):
         generator = globals()["generate_%slist" % (section[:-1],)]
         subg = generator(config, data["results"])
@@ -748,7 +748,7 @@ def generate_search(config, data):
 
 
 def generate_recent(config, data):
-    g = Graph("IOMemory", BNode())
+    g = Graph("Memory", BNode())
     for update in data["updates"]:
         if "link" in update:
             subject = URIRef(link(update["link"]) + "#subject")

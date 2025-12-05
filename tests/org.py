@@ -15,26 +15,28 @@ class TestOrgs(unittest.TestCase):
         dogear_code = open(os.path.join(base, "org_dogear.html"), "r").read()
         dogear = org.parse_page(dogear_code)
         self.assertEqual("Dog Ear Records Co., Ltd.", dogear["name"])
-        self.assertEqual("Label / Imprint", dogear["type"])
+        self.assertEqual("Media / Entertainment Company", dogear["type"])
         self.assertEqual("Japan", dogear["region"])
-        self.assertEqual("Nobuo Uematsu", dogear["staff"][0]["names"]["en"])
-        self.assertEqual("Miyu", dogear["staff"][1]["names"]["en"])
+        self.assertEqual("Hiroki Ogawa", dogear["staff"][0]["names"]["en"])
+        self.assertEqual("Nobuo Uematsu", dogear["staff"][1]["names"]["en"])
         self.assertEqual(True, dogear["staff"][0]["owner"])
-        self.assertEqual(2, len(dogear["staff"]))
-        self.assertEqual("No description available", dogear["description"])
-        self.assertEqual(28, len(dogear["releases"]))
-        self.assertEqual("DERP-10001", dogear["releases"][0]["catalog"])
-        self.assertEqual("album/5343", dogear["releases"][0]["link"])
-        self.assertEqual("Kalaycilar", dogear["releases"][2]["titles"]["en"])
-        self.assertEqual("2008-03-19", dogear["releases"][1]["date"])
-        self.assertEqual("Publisher", dogear["releases"][1]["role"])
-        self.assertEqual(True, dogear["releases"][19]["reprint"])
+        self.assertEqual(7, len(dogear["staff"]))
+        self.assertEqual("", dogear["description"])
+        self.assertEqual(30, len(dogear["releases"]))
+        self.assertEqual("DERP-10012~4", dogear["releases"][0]["catalog"])
+        self.assertEqual("album/22773", dogear["releases"][0]["link"])
         self.assertEqual(
-            "https://vgmdb.net/db/assets/logos-medium/135-1246205463.gif",
+            "UnchainBlades ReXX Original Soundtrack",
+            dogear["releases"][2]["titles"]["en"],
+        )
+        self.assertEqual("2011-03-16", dogear["releases"][1]["date"])
+        self.assertEqual("Publisher, Copyright", dogear["releases"][1]["role"])
+        self.assertEqual(
+            "https://thumb-media.vgm.io/orgs/53/135/135-1246205463.gif",
             dogear["picture_small"],
         )
         self.assertEqual(
-            "https://vgmdb.net/db/assets/logos/135-1246205463.gif",
+            "https://media.vgm.io/orgs/53/135/135-1246205463.gif",
             dogear["picture_full"],
         )
 
