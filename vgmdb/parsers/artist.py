@@ -145,6 +145,7 @@ def _parse_profile_info(soup_profile_left):
         list_item_pre = soup_item.br
         while list_item_pre:
             soup_item_data = list_item_pre.next_sibling
+            div_separator = False
             # plain text entry in the section
             if isinstance(soup_item_data, bs4.NavigableString):
                 texts = []
@@ -159,6 +160,7 @@ def _parse_profile_info(soup_profile_left):
                 item_data = {}
                 # outdated alias format
                 if soup_item_data.name == "div" and soup_item_data.a:
+                    div_separator = True
                     item_data["link"] = utils.trim_absolute(soup_item_data.a["href"])
                     names = [str(soup_item_data.a.string)]
                     for alt_name in soup_item_data.find_all("span"):
@@ -222,7 +224,10 @@ def _parse_profile_info(soup_profile_left):
                             str(soup_item_data.string) + soup_item_data.next_sibling
                         )
 
-            list_item_pre = list_item_pre.next_sibling
+            if div_separator:
+                list_item_pre = soup_item_data
+            else:
+                list_item_pre = list_item_pre.find_next_sibling("br")
         if len(item_list) == 0:
             continue
         # what item headings indicate people, and should have names
@@ -288,6 +293,8 @@ def _parse_websites(soup_websites):
         soup_links = [
             soup_link.a for soup_link in soup_links if soup_link.a is not None
         ]
+        # compat with older html
+        soup_links += soup_category.find_all("a", recursive=False)
         links = []
         for soup_link in soup_links:
             link = soup_link["href"]
