@@ -262,7 +262,10 @@ def _parse_websites(soup_websites):
     sites = {}
     for soup_category in soup_websites.find_all("div", recursive=False):
         category = str(soup_category.b.string)
-        soup_links = soup_category.find_all("a", recursive=False)
+        soup_links = soup_category.find_all("span", recursive=False)
+        soup_links = [
+            soup_link.a for soup_link in soup_links if soup_link.a is not None
+        ]
         links = []
         for soup_link in soup_links:
             link = soup_link["href"]
