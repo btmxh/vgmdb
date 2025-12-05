@@ -1,2 +1,2 @@
 #!/bin/sh
-exec su -s /bin/sh www-data -c "/usr/local/bin/celery worker --maxtasksperchild=100 --time-limit=300 --concurrency=3 --pool=threads --app=vgmdb --loglevel=DEBUG --workdir=/ --config=celery --hostname=vgmdb-background.%h --queues=celery,sellers,background"
+exec su -s /bin/sh www-data -c "/usr/local/bin/celery --app=vgmdb --config=celery worker --max-tasks-per-child=100 --time-limit=300 --concurrency=3 --pool=threads --loglevel=DEBUG --hostname=vgmdb-background.%h --queues=celery,sellers,background"

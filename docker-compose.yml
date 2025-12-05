@@ -49,18 +49,7 @@ services:
       - DISCOGS_SECRET
       - SPOTIFY_ID
       - SPOTIFY_SECRET
-    command: >
-      celery 
-        --app vgmdb
-        --config=celery
-      worker
-        --max-tasks-per-child=100
-        --time-limit=300
-        --concurrency=3
-        --pool=threads
-        --loglevel=DEBUG
-        --hostname=vgmdb-priority.%h
-        --queues=celery
+    command: ./sv-celery-priority
   vgmdb_celery_background:
     build: .
     depends_on:
@@ -78,15 +67,4 @@ services:
       - DISCOGS_SECRET
       - SPOTIFY_ID
       - SPOTIFY_SECRET
-    command: >
-      celery 
-        --app vgmdb
-        --config=celery
-      worker
-        --max-tasks-per-child=100
-        --time-limit=300
-        --concurrency=3
-        --pool=threads
-        --loglevel=DEBUG
-        --hostname=vgmdb-priority.%h
-        --queues=celery
+    command: ./sv-celery-background

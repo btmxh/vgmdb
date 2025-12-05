@@ -21,5 +21,9 @@ COPY raml   /app/www_root/raml
 COPY schema /app/www_root/schema
 COPY static/robots.txt /app/www_root/robots.txt
 
+COPY docker/sv-celery-background /app/sv-celery-background
+COPY docker/sv-celery-priority /app/sv-celery-priority
+RUN chmod +x /app/sv-celery-background /app/sv-celery-priority
+
 # Default command: run the web app
 CMD ["gunicorn", "vgmdb.main:app", "--worker-class", "gevent", "--workers", "4", "--bind", "0.0.0.0:80"]
