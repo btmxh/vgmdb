@@ -10,15 +10,13 @@ services:
       - REDIS_EXTRA_FLAGS=--maxmemory 400mb --maxmemory-policy volatile-lru --timeout 60
       - ALLOW_EMPTY_PASSWORD=yes
   vgmdb_web:
-    image: hufman/vgmdb_web:latest
-    links:
+    build: .
+    depends_on:
       - redis
     ports:
       - "80"
-    labels:
-      com.joyent.package: g4-highcpu-256M
-      triton.cns.services: vgmdb-web
     restart: always
+    user: "www-data"
     environment:
       - REDIS_HOST=redis
       - DATA_BACKGROUND=true
@@ -34,15 +32,13 @@ services:
       - DISCOGS_SECRET
       - SPOTIFY_ID
       - SPOTIFY_SECRET
-  vgmdb_celery:
-    image: hufman/vgmdb_celery:latest
-    links:
+  vgmdb_celery_priority:
+    build: .
+    depends_on:
       - redis
-    labels:
-      com.joyent.package: g4-highcpu-256M
     restart: always
     environment:
-      - SEARCH_INDEX
+      - SEARCH_INDEX=false
       - REDIS_HOST=redis
       - STATSD_HOST
       - AMAZON_ACCESS_KEY_ID
@@ -53,3 +49,44 @@ services:
       - DISCOGS_SECRET
       - SPOTIFY_ID
       - SPOTIFY_SECRET
+    command: >
+      celery 
+        --app vgmdb
+        --config=celery
+      worker
+        --max-tasks-per-child=100
+        --time-limit=300
+        --concurrency=3
+        --pool=threads
+        --loglevel=DEBUG
+        --hostname=vgmdb-priority.%h
+        --queues=celery
+  vgmdb_celery_background:
+    build: .
+    depends_on:
+      - redis
+    restart: always
+    environment:
+      - SEARCH_INDEX=false
+      - REDIS_HOST=redis
+      - STATSD_HOST
+      - AMAZON_ACCESS_KEY_ID
+      - AMAZON_SECRET_ACCESS_KEY
+      - AMAZON_ASSOCIATE_TAG
+      - ITUNES_AFFILIATE_ID
+      - DISCOGS_KEY
+      - DISCOGS_SECRET
+      - SPOTIFY_ID
+      - SPOTIFY_SECRET
+    command: >
+      celery 
+        --app vgmdb
+        --config=celery
+      worker
+        --max-tasks-per-child=100
+        --time-limit=300
+        --concurrency=3
+        --pool=threads
+        --loglevel=DEBUG
+        --hostname=vgmdb-priority.%h
+        --queues=celery

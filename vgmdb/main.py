@@ -1,4 +1,13 @@
-from bottle import route, response, request, static_file, abort, hook, error
+from bottle import (
+    default_app,
+    route,
+    response,
+    request,
+    static_file,
+    abort,
+    hook,
+    error,
+)
 import urllib.request, urllib.parse, urllib.error
 from functools import wraps
 
@@ -234,3 +243,6 @@ def raml(name):
     if "text/html" in request.headers.get("Accept", ""):  # browser
         mimetype = "text/plain"
     return static_file(name, root="./raml", mimetype=mimetype)
+
+
+app = default_app()
