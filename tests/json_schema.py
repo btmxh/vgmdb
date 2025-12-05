@@ -32,7 +32,7 @@ class TestJsonSchemaMeta(type):
                 logging.info(
                     "Validating json schema %s with file %s" % (schema, filename)
                 )
-                code = file(filename, "r").read()
+                code = open(filename, "r").read()
                 data = parser.parse_page(code)
                 data["link"] = "unknown/A1"
                 data["vgmdb_link"] = "http://vgmdb.net/unknown/1"
