@@ -112,6 +112,10 @@ def _parse_org_releases(table):
     if len(soup_rows) < 1:
         return releases
 
+    headers = soup_rows[0].find_all("h4")
+    # one column has no headers
+    col3_header = headers[2] if len(headers) > 2 else None
+
     for soup_row in soup_rows[1:]:
         release = {}
         soup_cells = soup_row.find_all("td")
@@ -136,7 +140,18 @@ def _parse_org_releases(table):
             catalog_idx = 0
             reprint_idx = 1
             album_idx = 2
-            event_idx = 3
+            # there seems to be two kinds of organization pages: doujin pages
+            # (no roles, just events) and release pages (with roles, no events)
+            # both have 5 columns, but the 4th column header differs
+
+            # Example:
+            # https://vgmdb.net/org/2708 (with roles),
+            # https://vgmdb.net/org/1511 (with events)
+            if col3_header and col3_header.string.lower() == "role":
+                release["role"] = unicode(soup_cells[3].span.string)
+                event_idx = None
+            else:
+                event_idx = 3
             date_idx = 4
         else:
             continue
@@ -150,7 +165,7 @@ def _parse_org_releases(table):
             release["reprint"] = True
 
         # Parse event
-        if soup_cells[event_idx].a:
+        if event_idx is not None and soup_cells[event_idx].a:
             link = soup_cells[event_idx].a["href"]
             link = utils.trim_absolute(link)
             event = {}
